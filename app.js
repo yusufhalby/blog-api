@@ -8,6 +8,8 @@ const multer = require('multer');
 const feedRoutes = require('./routes/feed');
 const authRoutes = require('./routes/auth');
 
+const MONGODB_URI = 'mongodb://127.0.0.1:27017/messages?retryWrites=true&w=majority';
+const port = process.env.PORT || 8080;
 
 const app = express();
 
@@ -36,11 +38,9 @@ app.use(bodyParser.json());
 app.use(multer({storage: fileStorage, fileFilter}).single('image'));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-const MONGODB_URI = 'mongodb://127.0.0.1:27017/messages?retryWrites=true&w=majority';
-
 // CORS Headers - Cross-Origin Resource Sharing 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', '*', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE'); //OPTIONS is optional :"
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); //Authorization must be enabled
     next();
@@ -62,8 +62,12 @@ app.use((error, req, res, next)=>{
 mongoose
     .connect(MONGODB_URI)
     .then(result => {
-        app.listen(8080);
-        console.log('connected');
+        const server = app.listen(port);
+        const io = require('./socket').init(server);
+        io.on('connection', socket => {
+            console.log('Client connected');
+        });
+        console.log('Server is connected on port: ' + port);
     })
     .catch(err => {
         console.log(err);
