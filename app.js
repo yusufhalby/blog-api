@@ -36,7 +36,7 @@ app.use(bodyParser.json());
 app.use(multer({storage: fileStorage, fileFilter}).single('image'));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-const MONGODB_URI = 'mongodb://localhost:27017/messages?retryWrites=true&w=majority';
+const MONGODB_URI = 'mongodb://127.0.0.1:27017/messages?retryWrites=true&w=majority';
 
 // CORS Headers - Cross-Origin Resource Sharing 
 app.use((req, res, next) => {

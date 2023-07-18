@@ -3,7 +3,7 @@ const path = require('path');
 
 const {
     validationResult
-} = require('express-validator/check');
+} = require('express-validator');
 
 const Post = require('../models/post');
 const User = require('../models/user');
