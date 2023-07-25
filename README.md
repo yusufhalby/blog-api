@@ -1,2 +1,2 @@
-# First-REST-API
-Max cource
+# RESTful API
+Made for blog app
