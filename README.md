@@ -1,2 +1,2 @@
-# First-REST-API
-Max cource
+# GraphQL API
+Made for blog app
